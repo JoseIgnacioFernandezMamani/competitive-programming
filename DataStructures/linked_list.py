@@ -21,6 +21,12 @@ class LinkedList:
             node = node.next
         nodes.append("None")
         return " -> ".join(nodes)
+        
+    def __iter__(self):
+        node = self.head
+        while node is not None:
+            yield node
+            node = node.next
     
     def add_first(self, node):
         node.next = self.head
@@ -45,24 +51,32 @@ class LinkedList:
         raise Exception("Node with data '%s' not found" % target_node_data_data)
     
     def add_before_node(self, target_node_data, new_node):
-        if self head is None:
+        if self.head is None:
             raise Exception("List empty")
         if self.head == target_node_data:
             return self.add_first(new_node)
-        
+        prev_nodex = self.head
         for node in self:
             if node.data == target_node_data:
-                node_prev.next = new_node
+                prev_node.next = new_node
                 new_node.next = node
                 return
-            node_prev = node    
+            prev_node = node    
         raise Exception("Node with data '%s' not found" % target_node_data)
-    
-    def __iter__(self):
-        node = self.head
-        while node is not None:
-            yield node
-            node = node.next
+    def remove_node(self, target_node_data):
+        if self.head is None:
+            raise Exception("Linked list is empty")
+        if self.head.data == target_node_data:
+            self.head = self.head.next
+            return
+        prev_node = self.head
+        for node in self:
+            if node.data == target_node_data:
+                prev_node.next = node.next
+                return
+            prev_node = node
+        raise Exception("Node with data '%s' not found" % target_node_data)
+        
     
 class Node:
     def __init__(self, data):
@@ -74,11 +88,11 @@ class Node:
     
 llist = LinkedList()
 n1 = Node("a")
-llist.head = n1
 n2 = Node("b")
 n3 = Node("c")
 n4 = Node("d")
 n5 = Node("e")
+llist.head = n1
 
 n1.next = n2
 n2.next = n3
@@ -86,7 +100,10 @@ n3.next = n4
 n4.next = n5
 
 print(llist)
-    
+
+llist.remove_node("c")
+
+print(llist)
     
     
     
